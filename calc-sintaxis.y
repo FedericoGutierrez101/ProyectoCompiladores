@@ -2,97 +2,93 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "utils/bitree.h"
 
 int yylex();
 int yyerror(char *);
 
-nodeSt* symboltable;
 
 %}
  
-%union { int i; char *s; struct nodeTree *tn;}
+%union { int i; char *s;}
  
 %token<i> INT TTRUE TFALSE
 %token<s> ID 
-%token TINT TBOOL 
-%token RETURN
 
-%type<tn> VALUE expr decl stmt stmts decls prog return returns
-%type<i> type
+%left '<' '>' "=="
+%left '*' '/' '%'
+%left '+' '-'
+%left "&&"
+%left "||"
 
-%left '+'  
-%left '*'
 
- 
 %%
-program: '{' var_decls method_decls '}' { } ;   
+program: "program" '{' var_decls method_decls '}' { } ;   
 
 var_decls: var_decl var_decls { }
-        | void
+        | 
 ;
 
 var_decl: type ides ';' { };
 
-ides: id ',' ides { }
-    | id { }
+ides: ID ',' ides { }
+    | ID { }
 ;
 
 method_decls: method_decl method_decls { }
-            | void 
+            |  
 ;
 
-method_decl : taip id '(' typeides ')' block { }
-            | taip id '(' typeides ')' extern ; { }
+method_decl : taip ID '(' typeides ')' block { }
+            | taip ID '(' typeides ')' "extern" ';' { }
 ;
 
 taip: type { } 
-    | void 
+    |  
 ;
 
-typeides: type id typeides2 { } 
-        | void
+typeides: type ID typeides2 { } 
+        | 
 ;
 
-typeides2: ',' type id typeides2 { }
-        | void
+typeides2: ',' type ID typeides2 { }
+        | 
 ;
 
 block: '{' var_decls statements '}' { } ;
 
-statements: statament statements { }
-          | void 
+statements: statement statements { }
+          |  
 ;
 
-type: integer { }
-    | bool  { }
+type: "integer" { }
+    | "bool"  { }
 ;
 
-statement: id '=' expr ';' { }
+statement: ID '=' expr ';' { }
          | method_call ';' { }
-         | if '(' expr ')' then block elss { }
-         | while expr block { }
-         | return expr ';' { }
-         | return void ';' { }
-         | ;
+         | "if" '(' expr ')' "then" block elss { }
+         | "while" expr block { }
+         | "return" expr ';' { }
+         | "return"  ';' { }
+         | ';' { }
          | block { }
 ;
 
-elss: else block { }
-    | void
+elss: "else" block { }
+    | 
 ;
 
-method_call: id '(' exprs ')' { } ;
+method_call: ID '(' exprs ')' { } ;
 
-exprs: expr exprs2 { }
-     | void 
+exprs: expr expr2 { }
+     |  
 ;
 
 expr2: ',' expr expr2 { }
-     | void
+     | 
 ;
 
-expr: id { }
+expr: ID { }
     | method_call { }
     | literal { }
     | expr bin_op expr { }
@@ -108,19 +104,22 @@ bin_op: arith_op { }
 
 arith_op: '+' | '-' | '*' | '/' | '%' ;
 
-rel_op: '<' | '>' | '==' ;
+rel_op: '<' | '>' | "==" ;
 
-cond_op: '&&' | '||' ;
+cond_op: "&&" | "||" ;
 
-literal: integer_litearal { }
+literal: integer_literal { }
         | bool_literal { }
 ;
 
+bool_literal: "true" { }
+            | "false" { }
+;
 integer_literal: digit integer_literal { }
                | digit;
 
 
-digit: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 ;
+digit:INT;
 
  
 %%
