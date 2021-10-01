@@ -11,10 +11,9 @@ int yyerror(char *);
 %union { int i; char *s;}
  
 %token<i> INT 
-%token<s> ID BOOLEAN ARITHOP CONDOP RELOP BINOP PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID 
+%token<s> ID TMENOS BOOLEAN ARITHOP CONDOP RELOP PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID RETURN
 
-%left '<' '>' "==" '+' '*' '/'
-%left '%'
+%left '<' '>' "==" '+' '*' '/' '%'
 %left "&&"
 %left "||"
 %left '!'
@@ -95,17 +94,22 @@ exprs: exprs ',' expr
      | expr 
 ;
 
-expr: terminal
+expr: terminal              
     | expr2 expr 
     | '(' expr ')' 
 ;
 
-expr2: terminal BINOP  
-     | '-'
-     | '!' 
+expr2: terminal ARITHOP    
+     | terminal '-'    
+     | terminal RELOP
+     | terminal CONDOP
+     | '-'                 
+     | '!'
 ;
 
-terminal: ID | method_call | literal
+terminal: ID                
+        | method_call 
+        | literal
 ;
 
 literal: INT 

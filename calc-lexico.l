@@ -14,8 +14,6 @@ int yyparse();
 
 letter [a-zA-Z]
 digit [0-9]
-guion_bajo [_]
-
 
 %%
 
@@ -23,17 +21,11 @@ guion_bajo [_]
                                 printf("INT : %d\n",atoi(yytext)); 
                                 return INT;}   
 
-['+'|'-'|'/'|'*'|'%']           { printf("ARITHOP: %s\n",yytext);
+[+|/|*|%]                     { printf("ARITHOP: %s\n",yytext);
                                 return ARITHOP; }
 
 ["&&"|"||"]                     { printf("CONDOP: %s\n",yytext);
                                 return CONDOP; }
-
-['<'|'>'|"=="]                  { printf("RELOP: %s\n",yytext);
-                                return RELOP; }
-
-ARITHOP|CONDOP|RELOP            { printf("BINOP: %s\n",yytext);
-                                return BINOP; }                          
 
 "Program"                       { printf("PROGRAM: %s\n",yytext);
                                 return PROGRAM; }
@@ -73,8 +65,11 @@ ARITHOP|CONDOP|RELOP            { printf("BINOP: %s\n",yytext);
                                 printf("ID : %s\n",yytext);
                                 return ID;}
 
-[+*/%;()={},]                   { printf("SYMBOL: %s\n",yytext);
+[;()={},-]                   { printf("SYMBOL: %s\n",yytext);
                                 return *yytext;}
+
+['<'|'>'|"=="]                  { printf("RELOP: %s\n",yytext);
+                                return RELOP; }
 
 .|\n                          ; /* ignore all the rest */
 

@@ -41,27 +41,41 @@
    enum yytokentype {
      INT = 258,
      ID = 259,
-     ARITHOP = 260,
-     CONDOP = 261,
-     RELOP = 262,
-     BINOP = 263,
-     PROGRAM = 264,
-     BOOL = 265,
-     INTEGER = 266,
-     EXTERN = 267
+     TMENOS = 260,
+     BOOLEAN = 261,
+     ARITHOP = 262,
+     CONDOP = 263,
+     RELOP = 264,
+     PROGRAM = 265,
+     EXTERN = 266,
+     WHILE = 267,
+     BOOL = 268,
+     INTEGER = 269,
+     IF = 270,
+     ELSE = 271,
+     THEN = 272,
+     VOID = 273,
+     RETURN = 274
    };
 #endif
 /* Tokens.  */
 #define INT 258
 #define ID 259
-#define ARITHOP 260
-#define CONDOP 261
-#define RELOP 262
-#define BINOP 263
-#define PROGRAM 264
-#define BOOL 265
-#define INTEGER 266
-#define EXTERN 267
+#define TMENOS 260
+#define BOOLEAN 261
+#define ARITHOP 262
+#define CONDOP 263
+#define RELOP 264
+#define PROGRAM 265
+#define EXTERN 266
+#define WHILE 267
+#define BOOL 268
+#define INTEGER 269
+#define IF 270
+#define ELSE 271
+#define THEN 272
+#define VOID 273
+#define RETURN 274
 
 
 
@@ -71,7 +85,7 @@ typedef union YYSTYPE
 #line 11 "calc-sintaxis.y"
 { int i; char *s;}
 /* Line 1529 of yacc.c.  */
-#line 75 "calc-sintaxis.tab.h"
+#line 89 "calc-sintaxis.tab.h"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
