@@ -6,120 +6,109 @@
 int yylex();
 int yyerror(char *);
 
-
 %}
  
 %union { int i; char *s;}
  
-%token<i> INT TTRUE TFALSE
-%token<s> ID 
+%token<i> INT 
+%token<s> ID BOOLEAN ARITHOP CONDOP RELOP BINOP PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID 
 
-%left '<' '>' "=="
-%left '*' '/' '%'
-%left '+' '-'
+%left '<' '>' "==" '+' '*' '/'
+%left '%'
 %left "&&"
 %left "||"
-
-
+%left '!'
+%left '-'
 %%
-program: "program" '{' var_decls method_decls '}' { } ;   
+program: PROGRAM '{' var_decls method_decls '}'  
+       | PROGRAM '{' method_decls '}' 
+       | PROGRAM '{' var_decls '}' 
+       | PROGRAM '{' '}' 
+;  
 
-var_decls: var_decl var_decls { }
-        | 
+var_decls: var_decls var_decl  
+         | var_decl
 ;
 
-var_decl: type ides ';' { };
+var_decl: type ides ';' ;
 
-ides: ID ',' ides { }
-    | ID { }
+ides: ID ',' ides           
+    | ID 
 ;
 
-method_decls: method_decl method_decls { }
-            |  
+method_decls: method_decls method_decl
+            | method_decl
 ;
 
-method_decl : taip ID '(' typeides ')' block { }
-            | taip ID '(' typeides ')' "extern" ';' { }
+method_decl: type_void '(' typeides ')' method_decl_final 
+           | type_void '(' ')' method_decl_final 
 ;
 
-taip: type { } 
-    |  
+type_void: type ID 
+        | VOID ID 
 ;
 
-typeides: type ID typeides2 { } 
-        | 
+method_decl_final: block
+                 | EXTERN ';'
 ;
 
-typeides2: ',' type ID typeides2 { }
-        | 
+typeides: type ID ',' typeides { } 
+        | type ID
 ;
 
-block: '{' var_decls statements '}' { } ;
+block: '{' var_decls statements '}' { } 
+     | '{' statements '}' 
+     | '{' var_decls '}' 
+     | '{' '}' 
+;
 
 statements: statement statements { }
-          |  
+          | statement
 ;
 
-type: "integer" { }
-    | "bool"  { }
+type: INTEGER
+    | BOOL 
 ;
 
-statement: ID '=' expr ';' { }
-         | method_call ';' { }
-         | "if" '(' expr ')' "then" block elss { }
-         | "while" expr block { }
-         | "return" expr ';' { }
-         | "return"  ';' { }
-         | ';' { }
-         | block { }
+statement: ID '=' expr ';' 
+         | method_call ';' 
+         | if_stmt
+         | WHILE expr block 
+         | return_stmt
+         | block 
+         | ';' 
 ;
 
-elss: "else" block { }
-    | 
+return_stmt: RETURN expr
+           | RETURN ';'
 ;
 
-method_call: ID '(' exprs ')' { } ;
-
-exprs: expr expr2 { }
-     |  
+if_stmt: IF '(' expr ')' THEN block
+       | IF '(' expr ')' THEN block ELSE block
 ;
 
-expr2: ',' expr expr2 { }
-     | 
+method_call: ID '(' exprs ')'
+           | ID '(' ')' 
 ;
 
-expr: ID { }
-    | method_call { }
-    | literal { }
-    | expr bin_op expr { }
-    | '-' expr { }
-    | '!' expr { } 
-    | '(' expr ')' { } 
+exprs: exprs ',' expr
+     | expr 
 ;
 
-bin_op: arith_op { }
-      | rel_op { }
-      | cond_op { }
+expr: terminal
+    | expr2 expr 
+    | '(' expr ')' 
 ;
 
-arith_op: '+' | '-' | '*' | '/' | '%' ;
-
-rel_op: '<' | '>' | "==" ;
-
-cond_op: "&&" | "||" ;
-
-literal: integer_literal { }
-        | bool_literal { }
+expr2: terminal BINOP  
+     | '-'
+     | '!' 
 ;
 
-bool_literal: "true" { }
-            | "false" { }
+terminal: ID | method_call | literal
 ;
-integer_literal: digit integer_literal { }
-               | digit;
 
-
-digit:INT;
-
- 
+literal: INT 
+       | BOOLEAN
+;
 %%

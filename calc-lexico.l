@@ -21,30 +21,60 @@ guion_bajo [_]
 
 {digit}+                          { yylval.i = atoi(yytext);
                                 printf("INT : %d\n",atoi(yytext)); 
-                                return INT;}
+                                return INT;}   
 
-"int"                             { printf("TINT: %s\n",yytext);
-                                  return TINT; }
+['+'|'-'|'/'|'*'|'%']           { printf("ARITHOP: %s\n",yytext);
+                                return ARITHOP; }
 
-"bool"                            { printf("TBOOL: %s\n",yytext);
-                                  return TBOOL; }                                  
+["&&"|"||"]                     { printf("CONDOP: %s\n",yytext);
+                                return CONDOP; }
 
-"TRUE"                            { printf("TTRUE: %s\n",yytext);
-                                return TTRUE; }
+['<'|'>'|"=="]                  { printf("RELOP: %s\n",yytext);
+                                return RELOP; }
 
-"FALSE"                           { printf("TRUE: %s\n",yytext);
-                                return TFALSE; }
+ARITHOP|CONDOP|RELOP            { printf("BINOP: %s\n",yytext);
+                                return BINOP; }                          
 
-"RETURN"                          { printf("RETURN: %s\n",yytext);
+"Program"                       { printf("PROGRAM: %s\n",yytext);
+                                return PROGRAM; }
+
+"integer"                       { printf("INTEGER: %s\n",yytext);
+                                return INTEGER; }
+
+"bool"                          { printf("BOOL: %s\n",yytext);
+                                return BOOL; }
+
+"extern"                        { printf("EXTERN: %s\n",yytext);
+                                return EXTERN; }
+
+"while"                        { printf("WHILE: %s\n",yytext);
+                                return WHILE; }
+
+"return"                       { printf("RETURN: %s\n",yytext);
                                 return RETURN; }
 
-{letter}({letter}|{digit}|'_')*   { yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
+"if"                          { printf("IF: %s\n",yytext);
+                                return IF; }
+
+"then"                        { printf("THEN: %s\n",yytext);
+                                return THEN; }
+
+"else"                        { printf("ELSE: %s\n",yytext);
+                                return ELSE; }
+
+"void"                        { printf("VOID: %s\n",yytext);
+                                return VOID; }
+
+"true"|"false"                { printf("BOOLEAN: %s\n",yytext);
+                               return BOOLEAN; }
+
+{letter}({letter}|{digit}|'_')* { yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                 strcpy(yylval.s,yytext);
                                 printf("ID : %s\n",yytext);
                                 return ID;}
 
-[+-*/%;()=]                       {  printf("SYMBOL: %s\n",yytext);
-                                  return *yytext;}
+[+*/%;()={},]                   { printf("SYMBOL: %s\n",yytext);
+                                return *yytext;}
 
 .|\n                          ; /* ignore all the rest */
 

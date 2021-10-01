@@ -1,0 +1,5 @@
+Program { 
+  Integer x,y,z ; 
+  Bool x,y,z ;
+  Integer function (Integer x, Integer y){ }
+}
