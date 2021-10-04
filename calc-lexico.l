@@ -19,13 +19,13 @@ digit [0-9]
 
 {digit}+                          { yylval.i = atoi(yytext);
                                 printf("INT : %d\n",atoi(yytext)); 
-                                return INT;}   
+                                return INT;}
 
-[+|/|*|%]                     { printf("ARITHOP: %s\n",yytext);
-                                return ARITHOP; }
+"&&"                            { printf("AND: %s\n",yytext);
+                                return AND; }
 
-["&&"|"||"]                     { printf("CONDOP: %s\n",yytext);
-                                return CONDOP; }
+"||"                            { printf("OR: %s\n",yytext);
+                                return OR; }
 
 "Program"                       { printf("PROGRAM: %s\n",yytext);
                                 return PROGRAM; }
@@ -57,19 +57,22 @@ digit [0-9]
 "void"                        { printf("VOID: %s\n",yytext);
                                 return VOID; }
 
-"true"|"false"                { printf("BOOLEAN: %s\n",yytext);
-                               return BOOLEAN; }
+"true"                        { printf("BOOLEAN TRUE: %s\n",yytext);
+                               return BTRUE; }
+
+"false"                       { printf("BOOLEAN FALSE: %s\n",yytext);
+                               return BFALSE; }
 
 {letter}({letter}|{digit}|'_')* { yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                 strcpy(yylval.s,yytext);
                                 printf("ID : %s\n",yytext);
                                 return ID;}
 
-[;()={},-]                   { printf("SYMBOL: %s\n",yytext);
+[;()={},-<>+/*%]                   { printf("SYMBOL: %s\n",yytext);
                                 return *yytext;}
 
-['<'|'>'|"=="]                  { printf("RELOP: %s\n",yytext);
-                                return RELOP; }
+"=="                           { printf("EQUAL: %s\n",yytext);
+                                return EQUAL; }
 
 .|\n                          ; /* ignore all the rest */
 

@@ -11,13 +11,15 @@ int yyerror(char *);
 %union { int i; char *s;}
  
 %token<i> INT 
-%token<s> ID TMENOS BOOLEAN ARITHOP CONDOP RELOP PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID RETURN
+%token<s> ID TMENOS PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID RETURN BTRUE BFALSE AND OR EQUAL
 
-%left '<' '>' "==" '+' '*' '/' '%'
-%left "&&"
-%left "||"
+%left AND OR
+%nonassoc '<''>'EQUAL
+%left '+' '-'
+%left '*''/''%'
+%left UNARY
 %left '!'
-%left '-'
+
 %%
 program: PROGRAM '{' var_decls method_decls '}'  
        | PROGRAM '{' method_decls '}' 
@@ -94,25 +96,29 @@ exprs: exprs ',' expr
      | expr 
 ;
 
-expr: terminal              
-    | expr2 expr 
-    | '(' expr ')' 
+expr: ID
+| method_decl_final
+| literal
+| expr_bin
+| '-' expr %prec UNARY
+| '!' expr %prec UNARY
+| '(' expr ')'
 ;
 
-expr2: terminal ARITHOP    
-     | terminal '-'    
-     | terminal RELOP
-     | terminal CONDOP
-     | '-'                 
-     | '!'
-;
-
-terminal: ID                
-        | method_call 
-        | literal
-;
+expr_bin: expr '+' expr
+        | expr '-' expr
+        | expr '*' expr
+        | expr '/' expr
+        | expr '%' expr
+        | expr '<' expr
+        | expr '>' expr
+        | expr EQUAL expr
+        | expr AND expr
+        | expr OR expr
+        ;
 
 literal: INT 
-       | BOOLEAN
+       | BTRUE
+       | BFALSE
 ;
 %%
