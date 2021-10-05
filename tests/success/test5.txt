@@ -1,0 +1,28 @@
+Program { 
+  bool eof ;
+  integer open_file()
+  {
+    integer file;
+    file = 0;
+    return file;
+  }
+  
+  bool check_end(integer file)
+  {
+    bool aux;
+    aux = FALSE;
+  	if (file == 0) then
+    {
+      aux = FALSE;
+    }
+    return aux;
+  }
+  
+  void main()
+  {
+  	integer file;
+    file = open_file();
+  	eof = check_end(file);
+  	return eof;
+  }
+}

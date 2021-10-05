@@ -11,14 +11,14 @@ int yyerror(char *);
 %union { int i; char *s;}
  
 %token<i> INT 
-%token<s> ID TMENOS PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID RETURN BTRUE BFALSE AND OR EQUAL
+%token<s> ID PROGRAM EXTERN WHILE BOOL INTEGER IF ELSE THEN VOID RETURN BTRUE BFALSE AND OR EQUAL
 
-%left AND OR
-%nonassoc '<''>'EQUAL
 %left '+' '-'
 %left '*''/''%'
-%left UNARY
 %left '!'
+%left UNARY
+%nonassoc '<''>'EQUAL
+%left AND OR
 
 %%
 program: PROGRAM '{' var_decls method_decls '}'  
@@ -80,7 +80,7 @@ statement: ID '=' expr ';'
          | ';' 
 ;
 
-return_stmt: RETURN expr
+return_stmt: RETURN expr ';'
            | RETURN ';'
 ;
 
@@ -98,6 +98,7 @@ exprs: exprs ',' expr
 
 expr: ID
 | method_decl_final
+| method_call
 | literal
 | expr_bin
 | '-' expr %prec UNARY

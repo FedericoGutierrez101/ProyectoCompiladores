@@ -27,6 +27,9 @@ digit [0-9]
 "||"                            { printf("OR: %s\n",yytext);
                                 return OR; }
 
+"=="                           { printf("EQUAL: %s\n",yytext);
+                                return EQUAL; }
+
 "Program"                       { printf("PROGRAM: %s\n",yytext);
                                 return PROGRAM; }
 
@@ -63,16 +66,18 @@ digit [0-9]
 "false"                       { printf("BOOLEAN FALSE: %s\n",yytext);
                                return BFALSE; }
 
-{letter}({letter}|{digit}|'_')* { yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
+{letter}({letter}|{digit}|_)* { yylval.s=(char *) malloc(sizeof(yytext)*yyleng);
                                 strcpy(yylval.s,yytext);
                                 printf("ID : %s\n",yytext);
                                 return ID;}
 
-[;()={},-<>+/*%]                   { printf("SYMBOL: %s\n",yytext);
-                                return *yytext;}
+[;()={},-<>+/*%]               { printf("SYMBOL: %s\n",yytext);
+                                 return *yytext;}
 
-"=="                           { printf("EQUAL: %s\n",yytext);
-                                return EQUAL; }
+[/][*][^*]*[*]+([^*/][^*]*[*]+)*[/]       { /* Nada */ }
+[/][*]                                    { yy_fatal_error("comentario sin terminar"); }
+
+"//".*\n                       {/* comentario */}
 
 .|\n                          ; /* ignore all the rest */
 

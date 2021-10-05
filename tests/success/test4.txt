@@ -1,0 +1,18 @@
+Program { 
+  integer x,y,z ;
+  void swap(integer a, integer b)
+  {
+  	integer aux;
+  	aux = a;
+  	a = b;
+  	b = aux;
+	return;
+  }
+  
+  void main()
+  {
+	x = 10;
+	y = -100;
+	swap(x, y);
+  }
+}

@@ -1,0 +1,8 @@
+Program { 
+	void print_int(integer i) extern ;
+	void main() {
+	   // print_int imprime el numero
+	   print_int(1000);
+	   return;
+	}
+}

@@ -1,0 +1,7 @@
+Program { 
+  integer x,y,z ; 
+  bool x,y,z ;
+  integer function (integer x, integer y){ 
+    x = - 2 ;
+  }
+}

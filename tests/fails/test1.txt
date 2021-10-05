@@ -1,0 +1,15 @@
+/* Mi primer programa */
+/* Creadores: 
+	Luca Cariganano 
+	Federico Gutierrez 
+
+Program { 
+	void print_int(integer i) extern ;
+
+	void main() {
+	   integer x,y;
+	   // print_int imprime el numero
+	   print_int(x);
+	   return;
+	}
+}

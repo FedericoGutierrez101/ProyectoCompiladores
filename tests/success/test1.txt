@@ -1,0 +1,4 @@
+Program { 
+  integer x,y,z ;
+  bool aux ;
+}

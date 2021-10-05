@@ -1,0 +1,20 @@
+/* Mi primer programa */
+/* Creadores: 
+	Luca Cariganano 
+	Federico Gutierrez 
+*/
+Program { 
+	void print_int(integer i) extern ;
+
+	integer potencia(integer x1, integer x2) {
+		return x1 * x2;
+	}
+	void main() {
+	   integer x,y;
+	   x = 10;
+	   y = 2;
+	   // print_int imprime el numero
+	   print_int(potencia(x,y));
+	   return;
+	}
+}
